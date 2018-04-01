@@ -1,3 +1,7 @@
+
+////////////////////////NOTE I am using '!'   as   epsilon ///////////////////////////////////////////// 
+
+
 #include<bits/stdc++.h>
 using namespace std;
 vector<string>first[100];
