@@ -1,110 +1,90 @@
 
-////////////////////////NOTE I am using '!'   as   epsilon ///////////////////////////////////////////// 
-
-
+//|||||||||||||||||||||||||||||NOTE I am using '!'   as   epsilon |||||||||||||||||||||||||||||||||||||
+//||||||||||||||||||||||||||||||||---------------CDRSHYAMU----------|||||||||||||||||||||||||||||||||||
 #include<bits/stdc++.h>
 using namespace std;
-vector<string>first[100];
-vector<string >v[100];
-int nop;
-string findFirst(char x,int ii)
-{  string s,ss,prd,xx="\0";
-   s.insert(s.end(),x);
-   int i,j,k;
-   for(i=0;i<nop;i++)
-   {  if(v[i][0]==s&&i!=ii)
-      {
-      ss="\0";
-      prd=v[i][1];
+char fir[100][10];
+char fol[100][10];
+char prod[100][10];
+int n;
+int static  nn=0;
+string first(char x,int p)
+{  string s="\0";
+   int flag=0;
+   char c;
+    int i,j;
+    for(i=0;i<n;i++)
+    {  if(prod[i][0]==x)
+       {  for(j=1;j<strlen(prod[i]);j++)
+           {  if(j==1||prod[i][j-1]=='/')
+               {  if(prod[i][j]=='!')
+                   flag=1;
+                   else if(prod[i][j]<65||prod[i][j]>90)
+                   c=prod[i][j],s.insert(s.end(),c);
+                   else
+                     s+=first(prod[i][j],i);
 
-         for(j=0;j<prd.size();j++)
-         {  if(j==0||(j-1>0&&prd[j-1]=='/'))
-             {    if(prd[j]=='!')
-                   {ss.insert(ss.end(),prd[j]);ss.insert(ss.end(),' ');}
-                  else if(prd[j]<65||prd[j]>90)
-                  {ss.insert(ss.end(),prd[j]);ss.insert(ss.end(),' ');}
-                  else
-                  { xx=findFirst(prd[j],i);
-                    ss=ss+xx;
-                  }
-
-
+               }
+           }
+           if(flag==1)
+           { for(j=1;j<strlen(prod[p]);j++)
+             { if(prod[p][j]==x)
+                {
+                s+=first(prod[p][j+1],p);
+                   break;
+                }
              }
-
-         }
-      }
-   }
-   return ss;
-}
-main()
-{
-    cout<<"Enter no of productions :";
-    cin>>nop;
-    string prd;
-    int i,j,k;
-    for(i=0;i<nop;i++)
-    {  cout<<"Enter left symbol :";
-       cin>>prd;
-       v[i].push_back(prd);
-       cout<<"Enter production :";
-       cin>>prd;
-       v[i].push_back(prd);
-    }
-    cout<<"Productions are :";
-    for(i=0;i<nop;i++)
-    {  cout<<v[i][0]<<"->"<<v[i][1]<<endl;
-    }
-      string ff;
-    for(i=0;i<nop;i++)
-    { first[i].push_back(v[i][0]);
-      prd=v[i][1];
-
-      ff="\0";
-      for(j=0;j<prd.size();j++)
-      {  if(j==0||(j-1>0&&prd[j-1]=='/'))
-         { if(prd[j]=='!')
-           {  ff="\0";
-           ff.insert(ff.end(),prd[j]);
-           ff.insert(ff.end(),' ');
-           first[i].push_back(ff);
            }
-           else if(prd[j]<65||prd[j]>90)
-           {ff.insert(ff.end(),prd[j]);ff.insert(ff.end(),' ');first[i].push_back(ff);}
-           else
-           {
-           int flag=1,ddd=0;
-              while(flag==1)
-              {  ff="\0";
-
-                 ff=findFirst(prd[j],i);
-                    cout<<ddd<<endl;
-                 flag=0;
-                 for(k=0;k<ff.size();k++)
-                 { if(ff[k]=='!')
-                     {   if(j+1<prd.size()&&prd[j+1]!='/')
-                           {  j++;
-                              if(prd[j]<65||prd[j]>90)
-                               {ff.insert(ff.end(),prd[j]);ff.insert(ff.end(),' '); break;}
-                               else
-                               flag=1;
-                           }
-                     }
-                 }
-                 first[i].push_back(ff);
-              }
-
-
-           }
-         }
-
-      }
+           return s;
     }
-cout<<"First :";
-for(i=0;i<nop;i++)
-  {  cout<<first[i][0]<<"= {";
-  for(j=1;j<first[i].size();j++)
-     cout<<first[i][j];
-     cout<<"}"<<endl;
+
   }
 }
+int main()
+{  cout<<"Enter NUmber of productions(use ! for epsilon) :";
+   cin>>n;
+   int i,j,k,l;
+   string s;
+   char x[10],c,d;
+   for(i=0;i<n;i++)
+   {  cout<<"Enter left symbol of production :";
+      cin>>prod[i][0];
+      cout<<"Enter corresponding production :";
+      scanf("%s",x);
+      strcat(prod[i],x);
 
+   }
+   cout<<"Productions: "<<endl;
+   for(i=0;i<n;i++)
+   {  cout<<prod[i][0]<<"->";
+      for(j=1;j<strlen(prod[i]);j++)
+       cout<<prod[i][j];
+       cout<<endl;
+   }
+   for(i=0;i<n;i++)
+   {   fir[i][0]=prod[i][0];
+   for(j=1;j<strlen(prod[i]);j++)
+      {   if(j==1||prod[i][j-1]=='/')
+          {  if(prod[i][j]=='!')
+                 c=prod[i][j],fir[i][strlen(fir[i])]=c;
+             else if(prod[i][j]<65||prod[i][j]>90)
+                 c=prod[i][j],fir[i][strlen(fir[i])]=c;
+             else{
+                  s=first(prod[i][j],i);
+                  l=strlen(fir[i]);
+                  for(k=0;k<s.size();k++)
+                   {  fir[i][l+k]=s[k];
+                   }
+                 }
+          }
+
+      }
+   }
+   cout<<"First :"<<endl;
+   for(i=0;i<n;i++)
+   {  cout<<fir[i][0]<<"->";
+     for(j=1;j<strlen(fir[i]);j++)
+       cout<<fir[i][j];
+       cout<<endl;
+   }
+}
